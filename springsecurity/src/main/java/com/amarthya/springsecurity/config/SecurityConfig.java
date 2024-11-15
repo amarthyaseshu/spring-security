@@ -1,5 +1,6 @@
 package com.amarthya.springsecurity.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -19,6 +20,8 @@ import org.springframework.security.web.SecurityFilterChain;
 // Overriding default configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     // If we dont provide any filters like below mtd, then authentication wont be done (its like buying lock & properly not using it)
 //    @Bean
@@ -57,9 +60,13 @@ public class SecurityConfig {
     }
 
 
+    @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider provider=new DaoAuthenticationProvider();
         provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
+        provider.setUserDetailsService(userDetailsService);
         return provider;
     }
+
+
 }
