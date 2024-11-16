@@ -9,7 +9,7 @@ import lombok.Data;
 public class Users {
 
     @Id
-    private String id;
+    private Integer id;
     private String username;
     private String password;
 
