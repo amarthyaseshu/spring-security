@@ -1,0 +1,107 @@
+{
+	"info": {
+		"_postman_id": "082fd076-2b9e-42c1-be52-1ce7e3277320",
+		"name": "spring-security-practice",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12721259"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":6,\r\n    \"username\":\"f\",\r\n    \"password\":\"amarthya\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8082/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "amarthya",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "e",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":5,\r\n    \"username\":\"e\",\r\n    \"password\":\"amarthya\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8082/logins",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"logins"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlIiwiaWF0IjoxNzMxNzU0MTIwLCJleHAiOjE3MzE3NTQyMjh9.vX9XG5TBbpQ6L0er2uA8wRVwlg3qQDOlqBi49Jil4oI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8082/post",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"post"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
