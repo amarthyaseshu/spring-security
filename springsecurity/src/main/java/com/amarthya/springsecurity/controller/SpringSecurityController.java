@@ -1,7 +1,11 @@
 package com.amarthya.springsecurity.controller;
 
-import com.amarthya.springsecurity.model.Users;
+import com.amarthya.springsecurity.model.JwtResponse;
+import com.amarthya.springsecurity.entity.RefreshToken;
+import com.amarthya.springsecurity.model.RefreshTokenRequest;
+import com.amarthya.springsecurity.entity.Users;
 import com.amarthya.springsecurity.repo.UserRepo;
+import com.amarthya.springsecurity.service.RefreshTokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +27,8 @@ public class SpringSecurityController {
     AuthenticationManager authenticationManager;
     @Autowired
     JWTService jwtService;
+    @Autowired
+    private RefreshTokenService refreshTokenService;
 
     // we can also mention strength (how many rounds hash should be done) & version
     private BCryptPasswordEncoder encoder=new BCryptPasswordEncoder(12);
@@ -50,18 +56,39 @@ public class SpringSecurityController {
     }
 
     @PostMapping("/logins")
-    public String login(@RequestBody Users users){
+    public JwtResponse login(@RequestBody Users users){
         return verify(users);
 
     }
 
-    public String verify(Users users){
+    public JwtResponse verify(Users users){
         // verifying user
         Authentication authentication=authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(users.getUsername(),users.getPassword()));
         if(authentication.isAuthenticated()){
             // generating token after user is verified
-            return jwtService.generateToken(users.getUsername());
+           // return jwtService.generateToken(users.getUsername());
+            RefreshToken refreshToken = refreshTokenService.createRefreshToken(users.getUsername());
+            return JwtResponse.builder()
+                    .jwtToken(jwtService.generateToken(users.getUsername()))
+                    //providing refresh token also in response
+                    .refreshToken(refreshToken.getToken()).build();
         }
-        return "fail";
+        throw new RuntimeException("invalid user request !");
     }
+
+    @PostMapping("/refreshToken")
+    public JwtResponse refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
+        return refreshTokenService.findByToken(refreshTokenRequest.getRefreshToken())
+                .map(refreshTokenService::verifyExpiration)
+                .map(RefreshToken::getUsers)
+                .map(userInfo -> {
+                    String jwtToken = jwtService.generateToken(userInfo.getUsername());
+                    return JwtResponse.builder()
+                            .jwtToken(jwtToken)
+                            .refreshToken(refreshTokenRequest.getRefreshToken())
+                            .build();
+                }).orElseThrow(() -> new RuntimeException(
+                        "Refresh token is not in database!"));
+    }
+
 }

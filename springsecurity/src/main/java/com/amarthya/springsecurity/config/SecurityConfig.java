@@ -47,7 +47,7 @@ public class SecurityConfig {
                 // To authenticate all requests (if this is not given wont be authenticated at all)
              .authorizeHttpRequests(request->request
                      // permit all only for register & login end pts
-                     .requestMatchers("register","login")
+                     .requestMatchers("register","logins","refreshToken")
                      .permitAll()
                      .anyRequest().authenticated())
                  // For browser to enter username & password (need to remove below one when made stateless as form login doesn't work (happens recursilvely same), automatically popup will come)

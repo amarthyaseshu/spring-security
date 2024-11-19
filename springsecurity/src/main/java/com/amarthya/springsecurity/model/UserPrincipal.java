@@ -1,13 +1,12 @@
 package com.amarthya.springsecurity.model;
 
+import com.amarthya.springsecurity.entity.Users;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 
 // UserPrincipal refers to current user we are referring to

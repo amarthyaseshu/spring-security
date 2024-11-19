@@ -1,7 +1,7 @@
 package com.amarthya.springsecurity.service;
 
 import com.amarthya.springsecurity.model.UserPrincipal;
-import com.amarthya.springsecurity.model.Users;
+import com.amarthya.springsecurity.entity.Users;
 import com.amarthya.springsecurity.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
